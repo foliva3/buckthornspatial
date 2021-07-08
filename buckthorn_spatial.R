@@ -110,7 +110,6 @@ ndvi0625r <- (m0625r[[5]] - m0625r[[3]]) / (m0625r[[5]] + m0625r[[3]])
 plot(ndvi0625r)
 
 
-
 m0701b1 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_01_21_buckthorn_p1/flight_07_01_21_buckthorn_p1_transparent_reflectance_blue.tif",
             "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_01_21_buckthorn_p1/flight_07_01_21_buckthorn_p1_transparent_reflectance_green.tif",
             "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_01_21_buckthorn_p1/flight_07_01_21_buckthorn_p1_transparent_reflectance_red.tif",
@@ -145,24 +144,34 @@ ndvi0707b <- (m0707b[[5]] - m0707b[[3]]) / (m0707b[[5]] + m0707b[[3]])
 plot(ndvi0707b)
 
 #adding gps coordinates to maps
+#read data for longitude and latitude
 sensort <- read.csv("K:/Environmental_Studies/hkropp/Data/campus/buckthorn/sapflux/sensors_meta.csv")
 sensorc <- st_as_sf(sensort, coords = c("Longitude", "Latitude"), 
                     crs = 4326)
+#plots points without map
 plot(sensorc$geometry)
+#transforms sensorc so that points are in utm zone 18N wgs 84
 sensorInfo <- st_transform(sensorc, crs = 32618)
+#add tree coordinates to ndvi map of 0707b
 plot(ndvi0707b)
 plot(sensorInfo$geometry, add = TRUE, pch = 19)
+#zoomed out view of plot
 extentB <- extent(466520, 466610, 4767390, 4767480)
+#zoomed in view of plot
 extentS <- extent(466535, 466600, 4767390, 4767430)
+#extentB view of 0503RGB with tree coords
 m0503RGBc <- crop(m0503bRGB, extentB)
 plotRGB(m0503RGBc, r = 3, g = 2, b = 1)
 plot(sensorInfo$geometry, add = TRUE, pch = 19)
-install.packages(c("mapview", "mapedit"))
+
+#install.packages(c("mapview", "mapedit"))
 library(mapview)
 library(mapedit)
+#changes view of map so that the max number of pixels is 5000000
 viewRGB(m0503RGBc, r = 3, g = 2, b = 1, maxpixels = 5000000)+
   mapview(sensorInfo)
 m0503RGBc@ncols*m0503RGBc@nrows
+#made box for removal plot
 removalBox <- st_polygon(list(rbind(c(-75.410795, 43.058728), 
                                     c(-75.410668, 43.058772),
                                     c(-75.410570, 43.058607),
@@ -170,13 +179,16 @@ removalBox <- st_polygon(list(rbind(c(-75.410795, 43.058728),
                                     c(-75.410795, 43.058728))))
 rmbox <- st_sfc(removalBox, crs = 4326)
 rmboxs <- st_sf(data.frame(name = "removal"), geometry = rmbox)
+#transformed rmbox so that the coordinates are in wgs 84 utm zone 18N
 removalp <- st_transform(rmboxs, crs = 32618)
 plot(rmbox)
+#why do we plot rmbox instead of removalp?
 viewRGB(m0503RGBc, r = 3, g = 2, b = 1, maxpixels = 5000000)+
   mapview(removalBox)
 plotRGB(m0503RGBc, r = 3, g = 2, b = 1)
 plot(removalp$geometry, add = TRUE)
 
+#drew manually the bounds of removal plot because of inaccuracies for removal plot above
 #removalPoly <- drawFeatures(
 viewRGB(m0503RGBc, r = 3, g = 2, b = 1)+
   mapview(removalBox)+
@@ -190,21 +202,45 @@ viewRGB(m0503RGBc, r = 3, g = 2, b = 1)+
     mapview(sensorInfo)+
     mapview(removalPoly))
 #st_write(controlPoly, "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/out/control_bounds.shp")
+#transformed removalPoly and controlPoly so that they are in wgs 84 utm zone 18N
 removalPoly <- st_transform(st_read("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/out/removal_bounds.shp"), 32618)
 controlPoly <- st_transform(st_read("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/out/control_bounds.shp"), 32618)
 
 
 
+#histogram of ndvi value distribution for 0707b in removal
+rm0707b <- extract(ndvi0707b, removalPoly)[[1]]
+hist(rm0707b)
+#histogram of ndvi value distribution for 0707b in control
+ctr0707b <- extract(ndvi0707b, controlPoly)[[1]]
+hist(ctr0707b)
+#mean ndvi value for control and removal in 0707b
+mean(rm0707b)
+mean(ctr0707b)
 
-rm1 <- extract(ndvi0707b, removalPoly)[[1]]
-hist(rm1)
-
-ctr1 <- extract(ndvi0707b, controlPoly)[[1]]
-hist(ctr1)
-mean(rm1)
-mean(ctr1)
-plot(removalPoly$geometry)
-plot(controlPoly$geometry)
-
+#resampling where 0707b is the base map
 ndvi0701b2R <- resample(ndvi0701b2, ndvi0707b)
 plot(ndvi0701b2R - ndvi0707b)
+#resampling where 0503b is the base map
+ndvi0707bR <- resample(ndvi0707b, ndvi0503b)
+plot(ndvi0707bR - ndvi0503b)
+
+ndvi0618b1R <- resample(ndvi0618b1, ndvi0503b)
+plot(ndvi0618b1R - ndvi0503b)
+#histogram for ndvi value distribution from 0618b1 removal
+rm0618b1 <- extract(ndvi0618b1, removalPoly)[[1]]
+hist(rm0618b1)
+mean(rm0618b1)
+#histogram for ndvi value distribution from 0618b control
+ctr0618b1 <- extract(ndvi0618b1, controlPoly)[[1]]
+hist(ctr0618b1)
+mean(ctr0618b1)
+#histogram of ndvi values for 0625r
+hist(ndvi0625r)
+#drew rough plot of where trees were planted for reforestation
+#reforestbox <- drawFeatures(
+  viewRGB(m0625r, r = 3, g = 2, b = 1)
+#st_write(reforestbox, "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/out/reforest_bounds.shp")
+rf0625 <- extract(ndvi0625r, reforestbox)[[1]]
+hist(rf0625)
+mean(rf0625)
