@@ -4,6 +4,9 @@ library(raster)
 library(tmap)
 library(rgdal)
 
+m0503bRGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_03_21_buckthorn/odm_orthophotoRGB.tif")
+plotRGB(m0503bRGB, r = 3, g = 2, b = 1)
+
 m0503b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_03_21_buckthorn/05_03_21_buckthorn_transparent_reflectance_blue.tif",
                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_03_21_buckthorn/05_03_21_buckthorn_transparent_reflectance_green.tif",
                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_03_21_buckthorn/05_03_21_buckthorn_transparent_reflectance_red.tif",
@@ -131,7 +134,7 @@ plotRGB(m0701b2, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 ndvi0701b2 <- (m0701b2[[5]] - m0701b2[[3]]) / (m0701b2[[5]] + m0701b2[[3]])
 plot(ndvi0701b2)
 
-m0701b2 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_07_21_buckthorn/07_07_21_buckthorn_transparent_reflectance_blue.tif",
+m0707b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_07_21_buckthorn/07_07_21_buckthorn_transparent_reflectance_blue.tif",
                  "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_07_21_buckthorn/07_07_21_buckthorn_transparent_reflectance_green.tif",
                  "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_07_21_buckthorn/07_07_21_buckthorn_transparent_reflectance_red.tif",
                  "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_07_21_buckthorn/07_07_21_buckthorn_transparent_reflectance_red edge.tif",
@@ -140,3 +143,68 @@ m0701b2 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/0
 plotRGB(m0707b, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 ndvi0707b <- (m0707b[[5]] - m0707b[[3]]) / (m0707b[[5]] + m0707b[[3]])
 plot(ndvi0707b)
+
+#adding gps coordinates to maps
+sensort <- read.csv("K:/Environmental_Studies/hkropp/Data/campus/buckthorn/sapflux/sensors_meta.csv")
+sensorc <- st_as_sf(sensort, coords = c("Longitude", "Latitude"), 
+                    crs = 4326)
+plot(sensorc$geometry)
+sensorInfo <- st_transform(sensorc, crs = 32618)
+plot(ndvi0707b)
+plot(sensorInfo$geometry, add = TRUE, pch = 19)
+extentB <- extent(466520, 466610, 4767390, 4767480)
+extentS <- extent(466535, 466600, 4767390, 4767430)
+m0503RGBc <- crop(m0503bRGB, extentB)
+plotRGB(m0503RGBc, r = 3, g = 2, b = 1)
+plot(sensorInfo$geometry, add = TRUE, pch = 19)
+install.packages(c("mapview", "mapedit"))
+library(mapview)
+library(mapedit)
+viewRGB(m0503RGBc, r = 3, g = 2, b = 1, maxpixels = 5000000)+
+  mapview(sensorInfo)
+m0503RGBc@ncols*m0503RGBc@nrows
+removalBox <- st_polygon(list(rbind(c(-75.410795, 43.058728), 
+                                    c(-75.410668, 43.058772),
+                                    c(-75.410570, 43.058607),
+                                    c(-75.410795, 43.058607),
+                                    c(-75.410795, 43.058728))))
+rmbox <- st_sfc(removalBox, crs = 4326)
+rmboxs <- st_sf(data.frame(name = "removal"), geometry = rmbox)
+removalp <- st_transform(rmboxs, crs = 32618)
+plot(rmbox)
+viewRGB(m0503RGBc, r = 3, g = 2, b = 1, maxpixels = 5000000)+
+  mapview(removalBox)
+plotRGB(m0503RGBc, r = 3, g = 2, b = 1)
+plot(removalp$geometry, add = TRUE)
+
+#removalPoly <- drawFeatures(
+viewRGB(m0503RGBc, r = 3, g = 2, b = 1)+
+  mapview(removalBox)+
+  mapview(sensorInfo))
+
+#st_write(removalPoly, "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/out/removal_bounds.shp")
+
+#controlPoly <- drawFeatures(
+  viewRGB(m0503RGBc, r = 3, g = 2, b = 1)+
+    mapview(removalBox)+
+    mapview(sensorInfo)+
+    mapview(removalPoly))
+#st_write(controlPoly, "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/out/control_bounds.shp")
+removalPoly <- st_transform(st_read("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/out/removal_bounds.shp"), 32618)
+controlPoly <- st_transform(st_read("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/out/control_bounds.shp"), 32618)
+
+
+
+
+rm1 <- extract(ndvi0707b, removalPoly)[[1]]
+hist(rm1)
+
+ctr1 <- extract(ndvi0707b, controlPoly)[[1]]
+hist(ctr1)
+mean(rm1)
+mean(ctr1)
+plot(removalPoly$geometry)
+plot(controlPoly$geometry)
+
+ndvi0701b2R <- resample(ndvi0701b2, ndvi0707b)
+plot(ndvi0701b2R - ndvi0707b)
