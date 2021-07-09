@@ -221,6 +221,9 @@ mean(ctr0707b)
 #resampling where 0707b is the base map
 ndvi0701b2R <- resample(ndvi0701b2, ndvi0707b)
 plot(ndvi0701b2R - ndvi0707b)
+
+ndvi0701b1R <- resample(ndvi0701b1, ndvi0707b)
+plot(ndvi0701b1R - ndvi0707b)
 #resampling where 0503b is the base map
 ndvi0707bR <- resample(ndvi0707b, ndvi0503b)
 plot(ndvi0707bR - ndvi0503b)
