@@ -5,7 +5,7 @@ library(tmap)
 library(rgdal)
 
 m0503bRGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_03_21_buckthorn/odm_orthophotoRGB.tif")
-#plotRGB(m0503bRGB, r = 3, g = 2, b = 1)
+plotRGB(m0503bRGB, r = 3, g = 2, b = 1)
 
 m0503b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_03_21_buckthorn/05_03_21_buckthorn_transparent_reflectance_blue.tif",
                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_03_21_buckthorn/05_03_21_buckthorn_transparent_reflectance_green.tif",
@@ -13,10 +13,11 @@ m0503b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05
                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_03_21_buckthorn/05_03_21_buckthorn_transparent_reflectance_red edge.tif",
                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_03_21_buckthorn/05_03_21_buckthorn_transparent_reflectance_nir.tif")
 
-#plotRGB(m0503b, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
+plot(m0503b)
+plotRGB(m0503b, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 
-ndvi0503b <- (m0503b[[5]] - m0503b[[3]] / m0503b[[5]] + m0503b[[3]])
-#plot(ndvi0503b)
+ndvi0503b <- (m0503b[[5]] - m0503b[[3]]) / (m0503b[[5]] + m0503b[[3]])
+plot(ndvi0503b)
 
 
 m0519b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_19_21_buckthorn/05_19_21_transparent_reflectance_blue.tif",
@@ -25,10 +26,10 @@ m0519b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05
                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_19_21_buckthorn/05_19_21_transparent_reflectance_red edge.tif",
                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_19_21_buckthorn/05_19_21_transparent_reflectance_nir.tif")
 
-#plotRGB(m0519b, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
+plotRGB(m0519b, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 
-ndvi0519b <- (m0519b[[5]] - m0519b[[3]] / m0519b[[5]] + m0519b[[3]])
-#plot(ndvi0519b)
+ndvi0519b <- (m0519b[[5]] - m0519b[[3]]) / (m0519b[[5]] + m0519b[[3]])
+plot(ndvi0519b)
 
 
 
@@ -527,7 +528,7 @@ ndvidfall <- rbind(dfremoval0503b, dfcontrol0503b, dfremoval0519b,
                    dfcontrol0707b, dfremoval0707b, dfremoval0712b1,
                    dfcontrol0712b1, dfcontrol0712b2, 
                    dfremoval0712b2)
-
+library(ggplot2)
 dodge <- position_dodge(width = 1)
 ggplot(ndvidfall, aes(date, ndvi, fill = trt))+
   geom_violin(position = dodge)+
@@ -544,7 +545,7 @@ mean.table <- data.frame(meanndvi = c(meanctr0503b, meanrm0503b, meanctr0519b, m
                                       "06/18/21", "06/18/21", "06/25/21", "06/25/21", 
                                       "07/01/21", "07/07/21", "07/12/21", "07/12/21"), each = 2), "%m/%d/%y"))
 
-library(ggplot2)
+
 ggplot(mean.table, aes(x = as.factor(date), meanndvi, color = trt))+
   geom_point()
 
