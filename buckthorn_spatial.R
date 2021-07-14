@@ -313,10 +313,10 @@ hist(ctr0503b)
 
 #ndvi value dist from 0519b
 rm0519b <- extract(ndvi0519b, removalPoly)[[1]]
-meanrm0519b <- mean(rm0519b)
+meanrm0519b <- mean(rm0519b, na.rm = TRUE)
 #ndvi value dist from 0519b
 ctr0519b <- extract(ndvi0519b, controlPoly)[[1]]
-meanctr0519b <- mean(ctr0519b)
+meanctr0519b <- mean(ctr0519b, na.rm = TRUE)
 
 
 #ndvi value dist from 0607b
@@ -407,12 +407,56 @@ meanctr0712b1 <- mean(ctr0712b1)
 
 #ndvi value dist from 0712b2
 rm0712b2 <- extract(ndvi0712b2, removalPoly)[[1]]
-meanrm0712b2 <- mean(rm0712b2)
+meanrm0712b2 <- mean(rm0712b2, na.rm = TRUE)
 #ndvi value dist from 0625b2
 ctr0712b2 <- extract(ndvi0712b2, controlPoly)[[1]]
 meanctr0712b2 <- mean(ctr0712b2)
 
+dfcontrol0701b2 <- data.frame(ndvi = ctr0701b2, 
+                              trt = rep("ctr", length(ctr0701b2)),
+                              date = rep("07/01/21", length(ctr0701b2)))
 
+dfremoval0701b2 <- data.frame(ndvi = rm0701b2, 
+                              trt = rep("rm", length(rm0701b2)),
+                              date = rep("07/01/21", length(rm0701b2)))
+
+
+
+dfcontrol0712b2 <- data.frame(ndvi = ctr0712b2, 
+                              trt = rep("ctr", length(ctr0712b2)),
+                              date = rep("07/12/21", length(ctr0712b2)))
+
+dfremoval0712b2 <- data.frame(ndvi = rm0712b2, 
+                              trt = rep("rm", length(rm0712b2)),
+                              date = rep("07/12/21", length(rm0712b2)))
+
+ndvidfall <- rbind(dfremoval0701b2, dfcontrol0701b2, dfcontrol0712b2, dfremoval0712b2)
+
+ggplot(ndvidfall, aes(date, ndvi, fill = trt))+
+  geom_violin(position = dodge)+
+  geom_boxplot(width = 0.1, position = dodge)
+  
+
+dodge <- position_dodge(width = 0.5)
+
+
+
+
+mean.table <- data.frame(meanndvi = c(meanctr0503b, meanrm0503b, meanctr0519b, meanrm0519b,meanctr0607b, meanrm0607b,
+                                       meanctr0610b, meanrm0610b, meanctr0618b1, meanrm0618b1, meanctr0618b2, meanrm0618b2,
+                                       meanctr0625b1, meanrm0625b1, meanctr0625b2, meanrm0625b2, meanctr0701b1, meanrm0701b1,
+                                       meanctr0707b, meanrm0707b, meanctr0712b2, meanrm0712b2, meanctr0712b1, meanrm0712b1), 
+                         trt = rep(c("ctr", "rm"), times = 12), 
+                         date = as.Date(rep(c("05/03/21", "05/19/21", "06/07/21", "06/10/21", 
+                                      "06/18/21", "06/18/21", "06/25/21", "06/25/21", 
+                                      "07/01/21", "07/07/21", "07/12/21", "07/12/21"), each = 2), "%m/%d/%y"))
+
+library(ggplot2)
+ggplot(mean.table, aes(x = as.factor(date), meanndvi, color = trt))+
+  geom_point()
+
+ggplot(mean.table[5:24,], aes(x = as.factor(date), meanndvi, color = trt))+
+  geom_point()
 #adding removal and control plots to data fame
 
 meanctr0503bdat <- data.frame(meanctr0503b)
