@@ -400,7 +400,7 @@ meanctr0707b <- mean(ctr0707b)
 #ndvi value dist from 0712b1
 rm0712b1 <- extract(ndvi0712b1, removalPoly)[[1]]
 meanrm0712b1 <- mean(rm0712b1)
-#ndvi value dist from 0625b2
+#ndvi value dist from 0712b1
 ctr0712b1 <- extract(ndvi0712b1, controlPoly)[[1]]
 meanctr0712b1 <- mean(ctr0712b1)
 
@@ -408,38 +408,131 @@ meanctr0712b1 <- mean(ctr0712b1)
 #ndvi value dist from 0712b2
 rm0712b2 <- extract(ndvi0712b2, removalPoly)[[1]]
 meanrm0712b2 <- mean(rm0712b2, na.rm = TRUE)
-#ndvi value dist from 0625b2
+#ndvi value dist from 0712b2
 ctr0712b2 <- extract(ndvi0712b2, controlPoly)[[1]]
 meanctr0712b2 <- mean(ctr0712b2)
 
+dfcontrol0503b <- data.frame(ndvi = ctr0503b, 
+                             trt = rep("ctr", length(ctr0503b)),
+                             date = rep("05/03/21", length(ctr0503b)))
+
+dfremoval0503b <- data.frame(ndvi = rm0503b, 
+                             trt = rep("rm", length(rm0503b)),
+                             date = rep("05/03/21", length(rm0503b)))
+
+dfcontrol0519b <- data.frame(ndvi = ctr0519b, 
+                             trt = rep("ctr", length(ctr0519b)),
+                             date = rep("05/19/21", length(ctr0519b)))
+
+dfremoval0519b <- data.frame(ndvi = rm0519b, 
+                             trt = rep("rm", length(rm0519b)),
+                             date = rep("05/19/21", length(rm0519b)))
+
+dfcontrol0607b <- data.frame(ndvi = ctr0607b, 
+                              trt = rep("ctr", length(ctr0607b)),
+                              date = rep("06/07/21", length(ctr0607b)))
+
+dfremoval0607b <- data.frame(ndvi = rm0607b, 
+                              trt = rep("rm", length(rm0607b)),
+                              date = rep("06/07/21", length(rm0607b)))
+
+dfcontrol0610b <- data.frame(ndvi = ctr0610b, 
+                              trt = rep("ctr", length(ctr0610b)),
+                              date = rep("06/10/21", length(ctr0610b)))
+
+dfremoval0610b <- data.frame(ndvi = rm0610b, 
+                              trt = rep("rm", length(rm0610b)),
+                              date = rep("06/10/21", length(rm0610b)))
+
+dfcontrol0618b1 <- data.frame(ndvi = ctr0618b1, 
+                              trt = rep("ctr", length(ctr0618b1)),
+                              date = rep("06/18/21 p1", length(ctr0618b1)))
+
+dfremoval0618b1 <- data.frame(ndvi = rm0618b1, 
+                              trt = rep("rm", length(rm0618b1)),
+                              date = rep("06/18/21 p1", length(rm0618b1)))
+
+dfcontrol0618b2 <- data.frame(ndvi = ctr0618b2, 
+                              trt = rep("ctr", length(ctr0618b2)),
+                              date = rep("06/18/21 p2", length(ctr0618b2)))
+
+dfremoval0618b2 <- data.frame(ndvi = rm0618b2, 
+                              trt = rep("rm", length(rm0618b2)),
+                              date = rep("06/18/21 p2", length(rm0618b2)))
+
+dfcontrol0625b1 <- data.frame(ndvi = ctr0625b1, 
+                              trt = rep("ctr", length(ctr0625b1)),
+                              date = rep("06/25/21 p1", length(ctr0625b1)))
+
+dfremoval0625b1 <- data.frame(ndvi = rm0625b1, 
+                              trt = rep("rm", length(rm0625b1)),
+                              date = rep("06/25/21 p1", length(rm0625b1)))
+
+dfcontrol0625b2 <- data.frame(ndvi = ctr0625b2, 
+                              trt = rep("ctr", length(ctr0625b2)),
+                              date = rep("06/25/21 p2", length(ctr0625b2)))
+
+dfremoval0625b2 <- data.frame(ndvi = rm0625b2, 
+                              trt = rep("rm", length(rm0625b2)),
+                              date = rep("06/25/21 p2", length(rm0625b2)))
+
+dfcontrol0701b1 <- data.frame(ndvi = ctr0701b1, 
+                              trt = rep("ctr", length(ctr0701b1)),
+                              date = rep("07/01/21 p1", length(ctr0701b1)))
+
+dfremoval0701b1 <- data.frame(ndvi = rm0701b1, 
+                              trt = rep("rm", length(rm0701b1)),
+                              date = rep("07/01/21 p1", length(rm0701b1)))
 dfcontrol0701b2 <- data.frame(ndvi = ctr0701b2, 
                               trt = rep("ctr", length(ctr0701b2)),
-                              date = rep("07/01/21", length(ctr0701b2)))
+                              date = rep("07/01/21 p2", length(ctr0701b2)))
 
 dfremoval0701b2 <- data.frame(ndvi = rm0701b2, 
                               trt = rep("rm", length(rm0701b2)),
-                              date = rep("07/01/21", length(rm0701b2)))
+                              date = rep("07/01/21 p2", length(rm0701b2)))
+
+
+dfcontrol0707b <- data.frame(ndvi = ctr0707b, 
+                              trt = rep("ctr", length(ctr0707b)),
+                              date = rep("07/07/21", length(ctr0707b)))
+
+dfremoval0707b <- data.frame(ndvi = rm0707b, 
+                              trt = rep("rm", length(rm0707b)),
+                              date = rep("07/07/21", length(rm0707b)))
+
+dfcontrol0712b1 <- data.frame(ndvi = ctr0712b1, 
+                              trt = rep("ctr", length(ctr0712b1)),
+                              date = rep("07/12/21 p1", length(ctr0712b1)))
+
+dfremoval0712b1 <- data.frame(ndvi = rm0712b1, 
+                              trt = rep("rm", length(rm0712b1)),
+                              date = rep("07/12/21 p1", length(rm0712b1)))
 
 
 
 dfcontrol0712b2 <- data.frame(ndvi = ctr0712b2, 
                               trt = rep("ctr", length(ctr0712b2)),
-                              date = rep("07/12/21", length(ctr0712b2)))
+                              date = rep("07/12/21 p2", length(ctr0712b2)))
 
 dfremoval0712b2 <- data.frame(ndvi = rm0712b2, 
                               trt = rep("rm", length(rm0712b2)),
-                              date = rep("07/12/21", length(rm0712b2)))
+                              date = rep("07/12/21 p2", length(rm0712b2)))
 
-ndvidfall <- rbind(dfremoval0701b2, dfcontrol0701b2, dfcontrol0712b2, dfremoval0712b2)
+ndvidfall <- rbind(dfremoval0503b, dfcontrol0503b, dfremoval0519b, 
+                   dfcontrol0519b, dfremoval0607b, dfcontrol0607b, dfremoval0610b, 
+                   dfcontrol0610b, dfremoval0618b1, dfcontrol0618b1, 
+                   dfremoval0618b2, dfcontrol0618b2, dfremoval0625b1, dfcontrol0625b1, 
+                   dfremoval0625b2, dfcontrol0625b2, dfremoval0701b1, 
+                   dfcontrol0701b1, dfremoval0701b2, dfcontrol0701b2, 
+                   dfcontrol0707b, dfremoval0707b, dfremoval0712b1,
+                   dfcontrol0712b1, dfcontrol0712b2, 
+                   dfremoval0712b2)
 
+dodge <- position_dodge(width = 1)
 ggplot(ndvidfall, aes(date, ndvi, fill = trt))+
   geom_violin(position = dodge)+
   geom_boxplot(width = 0.1, position = dodge)
   
-
-dodge <- position_dodge(width = 0.5)
-
-
 
 
 mean.table <- data.frame(meanndvi = c(meanctr0503b, meanrm0503b, meanctr0519b, meanrm0519b,meanctr0607b, meanrm0607b,
