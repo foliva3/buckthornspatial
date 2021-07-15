@@ -413,6 +413,8 @@ meanrm0712b2 <- mean(rm0712b2, na.rm = TRUE)
 ctr0712b2 <- extract(ndvi0712b2, controlPoly)[[1]]
 meanctr0712b2 <- mean(ctr0712b2)
 
+#adds ndvi values from removal and control into a dataframe
+
 dfcontrol0503b <- data.frame(ndvi = ctr0503b, 
                              trt = rep("ctr", length(ctr0503b)),
                              date = rep("05/03/21", length(ctr0503b)))
@@ -535,7 +537,7 @@ ggplot(ndvidfall, aes(date, ndvi, fill = trt))+
   geom_boxplot(width = 0.1, position = dodge)
   
 
-
+#adds all mean values of removal and control into a table
 mean.table <- data.frame(meanndvi = c(meanctr0503b, meanrm0503b, meanctr0519b, meanrm0519b,meanctr0607b, meanrm0607b,
                                        meanctr0610b, meanrm0610b, meanctr0618b1, meanrm0618b1, meanctr0618b2, meanrm0618b2,
                                        meanctr0625b1, meanrm0625b1, meanctr0625b2, meanrm0625b2, meanctr0701b1, meanrm0701b1,
@@ -551,7 +553,7 @@ ggplot(mean.table, aes(x = as.factor(date), meanndvi, color = trt))+
 
 ggplot(mean.table[5:24,], aes(x = as.factor(date), meanndvi, color = trt))+
   geom_point()
-#adding removal and control plots to data fame
+#these last few lines of code aren't necessary
 
 meanctr0503bdat <- data.frame(meanctr0503b)
 meanrm0503bdat <- data.frame(meanrm0503b)
