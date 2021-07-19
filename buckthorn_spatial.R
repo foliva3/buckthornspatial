@@ -19,6 +19,11 @@ plotRGB(m0503b, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 ndvi0503b <- (m0503b[[5]] - m0503b[[3]]) / (m0503b[[5]] + m0503b[[3]])
 plot(ndvi0503b)
 
+tm_shape(ndvi0503b)+
+  tm_raster(palette= "BrBG", style = "fisher", n= 10)+
+  tm_layout(legend.outside= TRUE)
+
+
 
 m0519b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_19_21_buckthorn/05_19_21_transparent_reflectance_blue.tif",
                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_19_21_buckthorn/05_19_21_transparent_reflectance_green.tif",
