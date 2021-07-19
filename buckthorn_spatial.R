@@ -18,11 +18,10 @@ plotRGB(m0503b, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 
 ndvi0503b <- (m0503b[[5]] - m0503b[[3]]) / (m0503b[[5]] + m0503b[[3]])
 plot(ndvi0503b)
-
+#tmap for ndvi0503b
 tm_shape(ndvi0503b)+
   tm_raster(palette= "BrBG", style = "fisher", n= 10)+
   tm_layout(legend.outside= TRUE)
-
 
 
 m0519b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_19_21_buckthorn/05_19_21_transparent_reflectance_blue.tif",
@@ -59,6 +58,11 @@ m0610b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06
 #plotRGB(m0610b, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 ndvi0610b <- (m0610b[[5]] - m0610b[[3]]) / (m0610b[[5]] + m0610b[[3]])
 #plot(ndvi0610b)
+
+tm_shape(ndvi0610b)+
+  tm_raster(palette= "BrBG", style = "fisher", n= 10)+
+  tm_layout(legend.outside= TRUE)
+
 
 
 #rerun 06_18 part 2 in pix4d
@@ -170,6 +174,12 @@ m0712b2 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/0
 ndvi0712b2 <- (m0712b2[[5]] - m0712b2[[3]]) / (m0712b2[[5]] + m0712b2[[3]])
 #plot(ndvi0712b2)
 
+tm_shape(ndvi0712b2, bbox = extentB)+
+  tm_raster(palette= "BrBG", style = "fisher", n= 10)+
+  tm_layout(legend.outside= TRUE)
+  
+  
+
 
 m0715rb <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_15_21_rogers_buckthorn/07_15_21_rogers_buckthorn_transparent_reflectance_blue.tif",
                  "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_15_21_rogers_buckthorn/07_15_21_rogers_buckthorn_transparent_reflectance_green.tif",
@@ -211,7 +221,7 @@ extentB <- extent(466520, 466610, 4767390, 4767480)
 extentS <- extent(466535, 466600, 4767390, 4767430)
 #extentB view of 0503RGB with tree coords
 m0503RGBc <- crop(m0503bRGB, extentB)
-#plotRGB(m0503RGBc, r = 3, g = 2, b = 1)
+plotRGB(m0503RGBc, r = 3, g = 2, b = 1)
 #plot(sensorInfo$geometry, add = TRUE, pch = 19)
 
 #comparison with old coords
