@@ -165,6 +165,29 @@ m0712b2 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/0
 ndvi0712b2 <- (m0712b2[[5]] - m0712b2[[3]]) / (m0712b2[[5]] + m0712b2[[3]])
 #plot(ndvi0712b2)
 
+
+m0715rb <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_15_21_rogers_buckthorn/07_15_21_rogers_buckthorn_transparent_reflectance_blue.tif",
+                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_15_21_rogers_buckthorn/07_15_21_rogers_buckthorn_transparent_reflectance_green.tif",
+                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_15_21_rogers_buckthorn/07_15_21_rogers_buckthorn_transparent_reflectance_red.tif",
+                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_15_21_rogers_buckthorn/07_15_21_rogers_buckthorn_transparent_reflectance_red edge.tif",
+                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_15_21_rogers_buckthorn/07_15_21_rogers_buckthorn_transparent_reflectance_nir.tif")
+
+#plotRGB(m0715rb, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
+ndvi0715rb <- (m0715rb[[5]] - m0715rb[[3]]) / (m0715rb[[5]] + m0715rb[[3]])
+#plot(ndvi0715rb)
+
+
+m0715rg <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_15_21_rogers_glen/07_15_21_rogers_glen_transparent_reflectance_blue.tif",
+                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_15_21_rogers_glen/07_15_21_rogers_glen_transparent_reflectance_green.tif",
+                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_15_21_rogers_glen/07_15_21_rogers_glen_transparent_reflectance_red.tif",
+                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_15_21_rogers_glen/07_15_21_rogers_glen_transparent_reflectance_red edge.tif",
+                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_15_21_rogers_glen/07_15_21_rogers_glen_transparent_reflectance_nir.tif")
+
+#plotRGB(m0715rg, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
+ndvi0715rg <- (m0715rg[[5]] - m0715rg[[3]]) / (m0715rg[[5]] + m0715rg[[3]])
+#plot(ndvi0715rg)
+
+
 #adding gps coordinates to maps
 #read data for longitude and latitude
 sensort <- read.csv("K:/Environmental_Studies/hkropp/Data/campus/buckthorn/sapflux/sensors_meta.csv")
@@ -236,7 +259,9 @@ removalp <- st_transform(rmboxs, crs = 32618)
 #transformed removalPoly and controlPoly so that they are in wgs 84 utm zone 18N
 removalPoly <- st_transform(st_read("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/out/removal_bounds.shp"), 32618)
 controlPoly <- st_transform(st_read("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/out/control_bounds.shp"), 32618)
-
+ashPoly <- st_transform(st_read("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/out/ash_canopies.shp"), 32618)
+maplePoly <- st_transform(st_read("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/out/ash_canopies.shp"), 32618)
+buckPoly <- st_transform(st_read("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/out/ash_canopies.shp"), 32618)
 
 
 #histogram of ndvi value distribution for 0707b in removal
