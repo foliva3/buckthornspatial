@@ -102,7 +102,7 @@ ndvi0625b1 <- (m0625b1[[5]] - m0625b1[[3]]) / (m0625b1[[5]] + m0625b1[[3]])
 #plot(ndvi0625b1)
 
 m0625b1RGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/P4M/flight_6_25_21_buckthorn_p1/ortho/06_25_21_buckthorn_p1_rgb/4_index/reflectance/06_25_21_buckthorn_p1_rgb_transparent_reflectance_group1.tif")
-plotRGB(m0625b1RGB, r= 3, g= 2, b= 1, scale =0.5, stretch = "lin")
+plotRGB(m0625b1RGB, r= 1, g= 2, b= 3, scale =0.5, stretch = "lin")
 
 m0625b2 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_25_21_buckthorn_p2/6_25_21_buckthorn_part2_transparent_reflectance_blue.tif",
                  "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_25_21_buckthorn_p2/6_25_21_buckthorn_part2_transparent_reflectance_green.tif",
