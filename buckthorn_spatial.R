@@ -16,6 +16,7 @@ m0503b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05
 plot(m0503b)
 plotRGB(m0503b, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 
+
 ndvi0503b <- (m0503b[[5]] - m0503b[[3]]) / (m0503b[[5]] + m0503b[[3]])
 plot(ndvi0503b)
 #tmap for ndvi0503b
@@ -59,9 +60,11 @@ m0610b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06
 ndvi0610b <- (m0610b[[5]] - m0610b[[3]]) / (m0610b[[5]] + m0610b[[3]])
 #plot(ndvi0610b)
 
-tm_shape(ndvi0610b)+
-  tm_raster(palette= "BrBG", style = "fisher", n= 10)+
-  tm_layout(legend.outside= TRUE)
+tm_shape(ndvi0610b, bbox= extentB)+
+  tm_raster(palette= "PRGn", style = "fisher", n= 10, midpoint= NA)+
+  tm_layout(legend.outside= TRUE)+
+  tm_compass(type= "arrow", size= 4)+
+  tm_scale_bar(breaks = c(0, 10, 20), position = c("left", "bottom"))
 
 
 
@@ -98,6 +101,8 @@ m0625b1 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/0
 ndvi0625b1 <- (m0625b1[[5]] - m0625b1[[3]]) / (m0625b1[[5]] + m0625b1[[3]])
 #plot(ndvi0625b1)
 
+m0625b1RGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/P4M/flight_6_25_21_buckthorn_p1/ortho/06_25_21_buckthorn_p1_rgb/4_index/reflectance/06_25_21_buckthorn_p1_rgb_transparent_reflectance_group1.tif")
+plotRGB(m0625b1RGB, r= 3, g= 2, b= 1)
 
 m0625b2 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_25_21_buckthorn_p2/6_25_21_buckthorn_part2_transparent_reflectance_blue.tif",
                  "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_25_21_buckthorn_p2/6_25_21_buckthorn_part2_transparent_reflectance_green.tif",
