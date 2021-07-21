@@ -19,10 +19,16 @@ plotRGB(m0503b, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 
 ndvi0503b <- (m0503b[[5]] - m0503b[[3]]) / (m0503b[[5]] + m0503b[[3]])
 plot(ndvi0503b)
+
+#extent for tmaps
+extentB <- extent(466520, 466610, 4767390, 4767480)
 #tmap for ndvi0503b
-tm_shape(ndvi0503b)+
-  tm_raster(palette= "BrBG", style = "fisher", n= 10)+
-  tm_layout(legend.outside= TRUE)
+tm_shape(ndvi0503b, bbox = extentB, unit = "m")+
+  tm_raster(palette= "BrBG", style = "fisher", n= 10, midpoint = NA, title = "NDVI")+
+  tm_layout(title = "05/03/21", legend.outside = TRUE)+
+  tm_compass(type= "arrow", size= 4, position = c("left", "bottom"))+
+  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, position = c("right", "bottom"))
+
 
 
 m0519b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_19_21_buckthorn/05_19_21_transparent_reflectance_blue.tif",
@@ -60,11 +66,11 @@ m0610b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06
 ndvi0610b <- (m0610b[[5]] - m0610b[[3]]) / (m0610b[[5]] + m0610b[[3]])
 #plot(ndvi0610b)
 
-tm_shape(ndvi0610b, bbox= extentB)+
-  tm_raster(palette= "PRGn", style = "fisher", n= 10, midpoint= NA)+
-  tm_layout(legend.outside= TRUE)+
-  tm_compass(type= "arrow", size= 4)+
-  tm_scale_bar(breaks = c(0, 10, 20), position = c("left", "bottom"))
+tm_shape(ndvi0610b, bbox = extentB, unit = "m")+
+  tm_raster(palette= "BrBG", style = "fisher", n= 10, midpoint = NA, title = "NDVI")+
+  tm_layout(title = "06/10/21", legend.outside = TRUE)+
+  tm_compass(type= "arrow", size= 4, position = c("left", "bottom"))+
+  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, position = c("right", "bottom"))
 
 
 
@@ -75,9 +81,17 @@ m0618b1 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/0
             "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p1/06_18_21_buckthorn_p1_rerun_transparent_reflectance_red edge.tif",
             "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p1/06_18_21_buckthorn_p1_rerun_transparent_reflectance_nir.tif")
 
-#plotRGB(m0618b1, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
+plotRGB(m0618b1, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 ndvi0618b1 <- (m0618b1[[5]] - m0618b1[[3]]) / (m0618b1[[5]] + m0618b1[[3]])
 #plot(ndvi0618b1)
+
+tm_shape(ndvi0618b1, bbox = extentB, unit = "m")+
+  tm_raster(palette= "BrBG", style = "fisher", n= 10, midpoint = NA, title = "NDVI")+
+  tm_layout(title = "06/18/21", legend.outside = TRUE)+
+  tm_compass(type= "arrow", size= 4, position = c("left", "bottom"))+
+  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, position = c("right", "bottom"))
+
+
 
 m0618b2 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p2/06_18_21_buckthorn_p2_rerun_transparent_reflectance_blue.tif",
                  "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p2/06_18_21_buckthorn_p2_rerun_transparent_reflectance_green.tif",
@@ -85,10 +99,12 @@ m0618b2 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/0
                  "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p2/06_18_21_buckthorn_p2_rerun_transparent_reflectance_red edge.tif",
                  "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p2/06_18_21_buckthorn_p2_rerun_transparent_reflectance_nir.tif")
 
-#plotRGB(m0618b2, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
+plotRGB(m0618b2, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 ndvi0618b2 <- (m0618b2[[5]] - m0618b2[[3]]) / (m0618b2[[5]] + m0618b2[[3]])
 #plot(ndvi0618b2)
 
+m0618b2RGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p2/rgb/06_18_21_buckthorn_p2_rgb_unmerged_transparent_reflectance_group1.tif")
+plotRGB(m0618b2RGB, r = 1, g = 2, b = 3, scale = 0.5, stretch = "lin")
 
 
 
@@ -97,12 +113,20 @@ m0625b1 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/0
                  "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_25_21_buckthorn_p1/6_25_21_buckthorn_part1_transparent_reflectance_red.tif",
                  "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_25_21_buckthorn_p1/6_25_21_buckthorn_part1_transparent_reflectance_red edge.tif",
                  "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_25_21_buckthorn_p1/6_25_21_buckthorn_part1_transparent_reflectance_nir.tif")
-#plotRGB(m0625b1, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
+plotRGB(m0625b1, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 ndvi0625b1 <- (m0625b1[[5]] - m0625b1[[3]]) / (m0625b1[[5]] + m0625b1[[3]])
 #plot(ndvi0625b1)
 
 m0625b1RGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/P4M/flight_6_25_21_buckthorn_p1/ortho/06_25_21_buckthorn_p1_rgb/4_index/reflectance/06_25_21_buckthorn_p1_rgb_transparent_reflectance_group1.tif")
 plotRGB(m0625b1RGB, r= 1, g= 2, b= 3, scale =0.5, stretch = "lin")
+
+tm_shape(ndvi0625b1, bbox = extentB, unit = "m")+
+  tm_raster(palette= "BrBG", style = "fisher", n= 10, midpoint = NA, title = "NDVI")+
+  tm_layout(title = "06/25/21", legend.outside = TRUE)+
+  tm_compass(type= "arrow", size= 4, position = c("left", "bottom"))+
+  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, position = c("right", "bottom"))
+
+
 
 m0625b2 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_25_21_buckthorn_p2/6_25_21_buckthorn_part2_transparent_reflectance_blue.tif",
                  "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_25_21_buckthorn_p2/6_25_21_buckthorn_part2_transparent_reflectance_green.tif",
@@ -131,11 +155,20 @@ m0701b1 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/0
             "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_01_21_buckthorn_p1/flight_07_01_21_buckthorn_p1_transparent_reflectance_red edge.tif",
             "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_01_21_buckthorn_p1/flight_07_01_21_buckthorn_p1_transparent_reflectance_nir.tif")
 
-#plotRGB(m0701b1, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
+plotRGB(m0701b1, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 
+m0701b1RGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_01_21_buckthorn_p1/rgb/07_01_21_buckthorn_p1_rgb_transparent_reflectance_group1.tif")
+plotRGB(m0701b1RGB, r = 1, g = 2, b = 3, stretch = "lin")
 
 ndvi0701b1 <- (m0701b1[[5]] - m0701b1[[3]]) / (m0701b1[[5]] + m0701b1[[3]])
 #plot(ndvi0701b1)
+
+tm_shape(ndvi0701b1, bbox = extentB, unit = "m")+
+  tm_raster(palette= "BrBG", style = "fisher", n= 10, midpoint = NA, title = "NDVI")+
+  tm_layout(title = "07/01/21", legend.outside = TRUE)+
+  tm_compass(type= "arrow", size= 4, position = c("left", "bottom"))+
+  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, position = c("right", "bottom"))
+
 
 
 m0701b2 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_01_21_buckthorn_p2/07_01_21_buckthorn_p2_transparent_reflectance_blue.tif",
@@ -206,6 +239,23 @@ m0715rg <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/0
 #plotRGB(m0715rg, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 ndvi0715rg <- (m0715rg[[5]] - m0715rg[[3]]) / (m0715rg[[5]] + m0715rg[[3]])
 #plot(ndvi0715rg)
+
+m0719b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_19_21_buckthorn_p2/07_19_21_buckthorn_p2_transparent_reflectance_blue.tif",
+                "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_19_21_buckthorn_p2/07_19_21_buckthorn_p2_transparent_reflectance_green.tif",
+                "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_19_21_buckthorn_p2/07_19_21_buckthorn_p2_transparent_reflectance_red.tif",
+                "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_19_21_buckthorn_p2/07_19_21_buckthorn_p2_transparent_reflectance_red edge.tif",
+                "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_19_21_buckthorn_p2/07_19_21_buckthorn_p2_transparent_reflectance_nir.tif")
+
+#plotRGB(m0715rg, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
+ndvi0719b <- (m0719b[[5]] - m0719b[[3]]) / (m0719b[[5]] + m0719b[[3]])
+
+
+tm_shape(ndvi0719b, bbox = extentB, unit = "m")+
+  tm_raster(palette= "BrBG", style = "fisher", n= 10, midpoint = NA, title = "NDVI")+
+  tm_layout(title = "07/19/21", legend.outside = TRUE)+
+  tm_compass(type= "arrow", size= 4, position = c("left", "bottom"))+
+  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, position = c("right", "bottom"))
+
 
 
 #adding gps coordinates to maps
