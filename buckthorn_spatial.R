@@ -105,12 +105,40 @@ m0610b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06
                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_10_21_buckthorn/06_10_transparent_reflectance_nir.tif")
 
 #plotRGB(m0610b, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
+m0610bRGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_10_21_buckthorn/rgb/06_10_21_buckthorn_rgb_transparent_reflectance_group1.tif")
+
 #rgb tmap 0610b
-tm_shape(m0610b, bbox = extentB, unit = "m")+
-  tm_rgb(r = 3, g = 2, b = 1, max.value = 0.25)+
-  tm_layout(title = "06/10/21", title.color = "white")+
+tm_shape(m0610bRGB, bbox = extentB, unit = "m")+
+  tm_rgb(r = 1, g = 2, b = 3)+
+  tm_layout(title = "06/10/21", title.color = "black", legend.outside = TRUE, title.snap.to.legend = TRUE)+
   tm_compass(type= "arrow", size= 4, position = c("left", "bottom"), text.color = "white")+
-  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", position = c("right", "bottom"))
+  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", 
+               position = c("right", "bottom"))+
+  tm_shape(removalPoly)+
+  tm_fill(alpha = 0, id = "Removal")+
+  tm_borders(col = "red",
+             lwd = 2,
+             lty = "solid",
+             alpha = NA,
+             zindex = NA,
+             group = NA)+
+  tm_shape(controlPoly)+
+  tm_fill(alpha = 0, title = "Treatment", id = "Control")+
+  tm_borders(col = "blue",
+             lwd = 2,
+             lty = "solid",
+             alpha = NA,
+             zindex = NA,
+             group = NA)+
+  tm_add_legend(type = "symbol",
+                labels = c("Removal", "Control"),
+                col = c("red", "blue"),
+                shape = NULL,
+                border.col = "black",
+                border.lwd = 1,
+                border.alpha = NA,
+                title = "Treatment",
+                is.portrait = TRUE)
 
 
 ndvi0610b <- (m0610b[[5]] - m0610b[[3]]) / (m0610b[[5]] + m0610b[[3]])
@@ -134,9 +162,38 @@ m0618b1RGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4
 
 tm_shape(m0618b1RGB, bbox = extentB, unit = "m")+
   tm_rgb(r = 1, g = 2, b = 3)+
-  tm_layout(title = "06/18/21", title.color = "white")+
-  tm_compass(type= "arrow", size= 4, position = c("left", "bottom"), text.color = "white")+
-  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", position = c("right", "bottom"))
+  tm_layout(title = "06/18/21", title.color = "black", 
+            legend.outside = TRUE)+
+  tm_compass(type= "arrow", size= 4, position = c("left", "bottom"), 
+             text.color = "white")+
+  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", 
+               position = c("right", "bottom"))+
+  tm_shape(removalPoly)+
+  tm_fill(alpha = 0, id = "Removal")+
+  tm_borders(col = "red",
+             lwd = 2,
+             lty = "solid",
+             alpha = NA,
+             zindex = NA,
+             group = NA)+
+  tm_shape(controlPoly)+
+  tm_fill(alpha = 0, title = "Treatment", id = "Control")+
+  tm_borders(col = "blue",
+             lwd = 2,
+             lty = "solid",
+             alpha = NA,
+             zindex = NA,
+             group = NA)+
+  tm_add_legend(type = "symbol",
+                labels = c("Removal", "Control"),
+                col = c("red", "blue"),
+                shape = NULL,
+                border.col = "black",
+                border.lwd = 1,
+                border.alpha = NA,
+                title = "Treatment",
+                is.portrait = TRUE)
+
 
 
 plotRGB(m0618b1RGB, r = 1, g = 2, b = 3, scale = 0.5, stretch = "lin")
@@ -251,9 +308,36 @@ plotRGB(m0701b1RGB, r = 1, g = 2, b = 3, stretch = "lin")
 
 tm_shape(m0701b1RGB, bbox = extentB, unit = "m")+
   tm_rgb(r = 1, g = 2, b = 3)+
-  tm_layout(title = "07/01/21", title.color = "white")+
+  tm_layout(title = "07/01/21", title.color = "black", legend.outside = TRUE)+
   tm_compass(type= "arrow", size= 4, position = c("left", "bottom"), text.color = "white")+
-  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", position = c("right", "bottom"))
+  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", 
+               position = c("right", "bottom"))+
+  tm_shape(removalPoly)+
+  tm_fill(alpha = 0, id = "Removal")+
+  tm_borders(col = "red",
+             lwd = 2,
+             lty = "solid",
+             alpha = NA,
+             zindex = NA,
+             group = NA)+
+  tm_shape(controlPoly)+
+  tm_fill(alpha = 0, title = "Treatment", id = "Control")+
+  tm_borders(col = "blue",
+             lwd = 2,
+             lty = "solid",
+             alpha = NA,
+             zindex = NA,
+             group = NA)+
+  tm_add_legend(type = "symbol",
+                labels = c("Removal", "Control"),
+                col = c("red", "blue"),
+                shape = NULL,
+                border.col = "black",
+                border.lwd = 1,
+                border.alpha = NA,
+                title = "Treatment",
+                is.portrait = TRUE)
+
 
 
 ndvi0701b1 <- (m0701b1[[5]] - m0701b1[[3]]) / (m0701b1[[5]] + m0701b1[[3]])
@@ -349,9 +433,36 @@ m0719bRGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M
 #rgb from multi images
 tm_shape(m0719b, bbox = extentB, unit = "m")+
   tm_rgb(r = 3, g = 2, b = 1, max.value = 0.5)+
-  tm_layout(title = "07/19/21", title.color = "white")+
-  tm_compass(type= "arrow", size= 4, position = c("left", "bottom"), text.color = "white")+
-  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", position = c("right", "bottom"))
+  tm_layout(title = "07/19/21", title.color = "black", legend.outside = TRUE)+
+  tm_compass(type= "arrow", size= 4, position = c("left", "bottom"), 
+             text.color = "white")+
+  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", 
+               position = c("right", "bottom"))+
+  tm_shape(removalPoly)+
+  tm_fill(alpha = 0, id = "Removal")+
+  tm_borders(col = "red",
+             lwd = 2,
+             lty = "solid",
+             alpha = NA,
+             zindex = NA,
+             group = NA)+
+  tm_shape(controlPoly)+
+  tm_fill(alpha = 0, title = "Treatment", id = "Control")+
+  tm_borders(col = "blue",
+             lwd = 2,
+             lty = "solid",
+             alpha = NA,
+             zindex = NA,
+             group = NA)+
+  tm_add_legend(type = "symbol",
+                labels = c("Removal", "Control"),
+                col = c("red", "blue"),
+                shape = NULL,
+                border.col = "black",
+                border.lwd = 1,
+                border.alpha = NA,
+                title = "Treatment",
+                is.portrait = TRUE)
 
 #ndvi tmap
 tm_shape(ndvi0719b, bbox = extentB, unit = "m")+
@@ -363,9 +474,35 @@ tm_shape(ndvi0719b, bbox = extentB, unit = "m")+
 #rgb tmap
 tm_shape(m0719bRGB, bbox = extentB, unit = "m")+
   tm_rgb(r = 1, g = 2, b = 3, max.value = 0.16)+
-  tm_layout(title = "07/19/21", title.color = "white")+
+  tm_layout(title = "07/19/21", title.color = "black", legend.outside = TRUE)+
   tm_compass(type= "arrow", size= 4, position = c("left", "bottom"), text.color = "white")+
-  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", position = c("right", "bottom"))
+  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", 
+               position = c("right", "bottom"))+
+  tm_shape(removalPoly)+
+  tm_fill(alpha = 0, id = "Removal")+
+  tm_borders(col = "red",
+             lwd = 2,
+             lty = "solid",
+             alpha = NA,
+             zindex = NA,
+             group = NA)+
+  tm_shape(controlPoly)+
+  tm_fill(alpha = 0, title = "Treatment", id = "Control")+
+  tm_borders(col = "blue",
+             lwd = 2,
+             lty = "solid",
+             alpha = NA,
+             zindex = NA,
+             group = NA)+
+  tm_add_legend(type = "symbol",
+                labels = c("Removal", "Control"),
+                col = c("red", "blue"),
+                shape = NULL,
+                border.col = "black",
+                border.lwd = 1,
+                border.alpha = NA,
+                title = "Treatment",
+                is.portrait = TRUE)
 
 
 
