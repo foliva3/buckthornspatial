@@ -583,6 +583,7 @@ maplePoly <- st_transform(st_read("K:/Environmental_Studies/hkropp/GIS/drone/cam
 buckPoly <- st_transform(st_read("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/out/ash_canopies.shp"), 32618)
 
 
+
 #histogram of ndvi value distribution for 0707b in removal
 rm0707b <- extract(ndvi0707b, removalPoly)[[1]]
 hist(rm0707b)
