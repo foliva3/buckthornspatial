@@ -1,18 +1,52 @@
 install.packages("sf","raster","tmap")
+install.packages("maptools")
 library(sf)
 library(raster)
 library(tmap)
 library(rgdal)
 library(ggplot2)
 
+
+#extent for tmaps
+extentB <- extent(466520, 466610, 4767390, 4767480)
+
 m0503bRGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_03_21_buckthorn/odm_orthophotoRGB.tif")
 plotRGB(m0503bRGB, r = 3, g = 2, b = 1)
 
 tm_shape(m0503bRGB, bbox = extentB, unit = "m")+
   tm_rgb(r = 3, g = 2, b = 1)+
-  tm_layout(title = "05/03/21")+
+  tm_layout(title = "05/03/21", legend.outside = TRUE)+
   tm_compass(type= "arrow", size= 4, position = c("left", "bottom"), text.color = "white")+
-  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", position = c("right", "bottom"))
+  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", 
+               position = c("right", "bottom"))+
+  tm_shape(removalPoly)+
+  tm_fill(alpha = 0, id = "Removal")+
+  tm_borders(col = "red",
+             lwd = 2,
+             lty = "solid",
+             alpha = NA,
+             zindex = NA,
+             group = NA)+
+  tm_shape(controlPoly)+
+  tm_fill(alpha = 0, title = "Treatment", id = "Control")+
+  tm_borders(col = "blue",
+             lwd = 2,
+             lty = "solid",
+             alpha = NA,
+             zindex = NA,
+             group = NA)+
+  tm_add_legend(type = "symbol",
+    labels = c("Removal", "Control"),
+    col = c("red", "blue"),
+    shape = NULL,
+    border.col = "black",
+    border.lwd = 1,
+    border.alpha = NA,
+    title = "Treatment",
+    is.portrait = TRUE)
+  
+
+
 
 
 
@@ -29,8 +63,7 @@ plotRGB(m0503b, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 ndvi0503b <- (m0503b[[5]] - m0503b[[3]]) / (m0503b[[5]] + m0503b[[3]])
 plot(ndvi0503b)
 
-#extent for tmaps
-extentB <- extent(466520, 466610, 4767390, 4767480)
+
 #tmap for ndvi0503b
 tm_shape(ndvi0503b, bbox = extentB, unit = "m")+
   tm_raster(palette= "BrBG", style = "fisher", n= 10, midpoint = NA, title = "NDVI")+
@@ -97,8 +130,20 @@ m0618b1 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/0
             "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p1/06_18_21_buckthorn_p1_rerun_transparent_reflectance_red.tif",
             "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p1/06_18_21_buckthorn_p1_rerun_transparent_reflectance_red edge.tif",
             "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p1/06_18_21_buckthorn_p1_rerun_transparent_reflectance_nir.tif")
+m0618b1RGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p1/rgb/06_18_21_buckthorn_p1_unmerged_rgb_transparent_reflectance_group1.tif")
 
-plotRGB(m0618b1, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
+tm_shape(m0618b1RGB, bbox = extentB, unit = "m")+
+  tm_rgb(r = 1, g = 2, b = 3)+
+  tm_layout(title = "06/18/21", title.color = "white")+
+  tm_compass(type= "arrow", size= 4, position = c("left", "bottom"), text.color = "white")+
+  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", position = c("right", "bottom"))
+
+
+plotRGB(m0618b1RGB, r = 1, g = 2, b = 3, scale = 0.5, stretch = "lin")
+
+
+
+
 ndvi0618b1 <- (m0618b1[[5]] - m0618b1[[3]]) / (m0618b1[[5]] + m0618b1[[3]])
 #plot(ndvi0618b1)
 
@@ -123,6 +168,11 @@ ndvi0618b2 <- (m0618b2[[5]] - m0618b2[[3]]) / (m0618b2[[5]] + m0618b2[[3]])
 m0618b2RGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p2/rgb/06_18_21_buckthorn_p2_rgb_unmerged_transparent_reflectance_group1.tif")
 plotRGB(m0618b2RGB, r = 1, g = 2, b = 3, scale = 0.5, stretch = "lin")
 
+m0618b2RGBc <- crop(m0618b2RGB, extentB)
+
+plotRGB(m0618b2RGBc, r = 1, g = 2, b = 3, scale = 0.3, stretch = "lin")
+
+
 
 tm_shape(m0618b2RGB, bbox = extentB, unit = "m")+
   tm_rgb(r = 1, g = 2, b = 3, max.value = 120000)+
@@ -143,7 +193,15 @@ ndvi0625b1 <- (m0625b1[[5]] - m0625b1[[3]]) / (m0625b1[[5]] + m0625b1[[3]])
 m0625b1RGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/P4M/flight_6_25_21_buckthorn_p1/ortho/06_25_21_buckthorn_p1_rgb/4_index/reflectance/06_25_21_buckthorn_p1_rgb_transparent_reflectance_group1.tif")
 plotRGB(m0625b1RGB, r= 1, g= 2, b= 3, scale =0.5, stretch = "lin")
 
-#tmap for rgb 0625
+#rgb tmap
+tm_shape(m0625b1RGB, bbox = extentB, unit = "m")+
+  tm_rgb(r = 1, g = 2, b = 3, max.value = 0.38)+
+  tm_layout(title = "06/25/21", title.color = "white")+
+  tm_compass(type= "arrow", size= 4, position = c("left", "bottom"), text.color = "white")+
+  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", position = c("right", "bottom"))
+
+
+#rgb multi tmap
 tm_shape(m0625b1, bbox = extentB, unit = "m")+
   tm_rgb(r = 3, g = 2, b = 1, max.value = 0.514)+
   tm_layout(title = "06/25/21", title.color = "white")+
@@ -286,18 +344,28 @@ m0719b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07
 
 ndvi0719b <- (m0719b[[5]] - m0719b[[3]]) / (m0719b[[5]] + m0719b[[3]])
 
+m0719bRGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/07_19_21_buckthorn_p2/rgb/07_19_21_buckthorn_p2_rgb_transparent_reflectance_group1.tif")
+
+#rgb from multi images
 tm_shape(m0719b, bbox = extentB, unit = "m")+
   tm_rgb(r = 3, g = 2, b = 1, max.value = 0.5)+
   tm_layout(title = "07/19/21", title.color = "white")+
   tm_compass(type= "arrow", size= 4, position = c("left", "bottom"), text.color = "white")+
   tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", position = c("right", "bottom"))
 
-
+#ndvi tmap
 tm_shape(ndvi0719b, bbox = extentB, unit = "m")+
   tm_raster(palette= "BrBG", style = "fisher", n= 10, midpoint = NA, title = "NDVI")+
   tm_layout(title = "07/19/21", legend.outside = TRUE)+
   tm_compass(type= "arrow", size= 4, position = c("left", "bottom"))+
   tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, position = c("right", "bottom"))
+
+#rgb tmap
+tm_shape(m0719bRGB, bbox = extentB, unit = "m")+
+  tm_rgb(r = 1, g = 2, b = 3, max.value = 0.16)+
+  tm_layout(title = "07/19/21", title.color = "white")+
+  tm_compass(type= "arrow", size= 4, position = c("left", "bottom"), text.color = "white")+
+  tm_scale_bar(breaks = c(0, 10, 20), text.size = 1, text.color = "white", position = c("right", "bottom"))
 
 
 
@@ -552,6 +620,13 @@ meanrm0712b2 <- mean(rm0712b2, na.rm = TRUE)
 ctr0712b2 <- extract(ndvi0712b2, controlPoly)[[1]]
 meanctr0712b2 <- mean(ctr0712b2)
 
+#ndvi by treatment for 07-19-21 b2
+rm0719b2 <- extract(ndvi0719b, removalPoly)[[1]]
+meanrm0719b2 <- mean(rm0719b2, na.rm = TRUE)
+
+ctr0719b2 <- extract(ndvi0719b, controlPoly)[[1]]
+meanctr0712b2 <- mean(ctr0719b2)
+
 #adds ndvi values from removal and control into a dataframe
 
 dfcontrol0503b <- data.frame(ndvi = ctr0503b, 
@@ -660,6 +735,14 @@ dfremoval0712b2 <- data.frame(ndvi = rm0712b2,
                               trt = rep("rm", length(rm0712b2)),
                               date = rep("07/12/21 p2", length(rm0712b2)))
 
+dfcontrol0719b <- data.frame(ndvi = ctr0719b2, 
+                              trt = rep("ctr", length(ctr0719b2)),
+                              date = rep("07/19/21", length(ctr0719b2)))
+
+dfremoval0719b <- data.frame(ndvi = rm0719b2, 
+                              trt = rep("rm", length(rm0719b2)),
+                              date = rep("07/19/21", length(rm0719b2)))
+
 ndvidfall <- rbind(dfremoval0503b, dfcontrol0503b, dfremoval0519b, 
                    dfcontrol0519b, dfremoval0607b, dfcontrol0607b, dfremoval0610b, 
                    dfcontrol0610b, dfremoval0618b1, dfcontrol0618b1, 
@@ -668,13 +751,24 @@ ndvidfall <- rbind(dfremoval0503b, dfcontrol0503b, dfremoval0519b,
                    dfcontrol0701b1, dfremoval0701b2, dfcontrol0701b2, 
                    dfcontrol0707b, dfremoval0707b, dfremoval0712b1,
                    dfcontrol0712b1, dfcontrol0712b2, 
-                   dfremoval0712b2)
+                   dfremoval0712b2, dfcontrol0719b, dfremoval0719b)
+
 library(ggplot2)
 dodge <- position_dodge(width = 1)
 ggplot(ndvidfall, aes(date, ndvi, fill = trt))+
   geom_violin(position = dodge)+
   geom_boxplot(width = 0.1, position = dodge)
   
+ndvidfsome <- rbind(dfremoval0503b, dfcontrol0503b, dfremoval0610b, 
+                   dfcontrol0610b, dfremoval0618b1, dfcontrol0618b1, 
+                   dfremoval0618b2, dfcontrol0618b2, dfremoval0625b1, dfcontrol0625b1, 
+                   dfremoval0625b2, dfcontrol0625b2, dfremoval0701b1, 
+                   dfcontrol0701b1, dfremoval0701b2, dfcontrol0701b2, 
+                   dfcontrol0719b, dfremoval0719b)
+
+ggplot(ndvidfsome, aes(date, ndvi, fill = trt))+
+  geom_violin(position = dodge)+
+  geom_boxplot(width = 0.1, position = dodge)
 
 #adds all mean values of removal and control into a table
 mean.table <- data.frame(meanndvi = c(meanctr0503b, meanrm0503b, meanctr0519b, meanrm0519b,meanctr0607b, meanrm0607b,
@@ -690,7 +784,8 @@ mean.table <- data.frame(meanndvi = c(meanctr0503b, meanrm0503b, meanctr0519b, m
 ggplot(mean.table, aes(x = as.factor(date), meanndvi, color = trt))+
   geom_point()
 
-ggplot(mean.table[5:24,], aes(x = as.factor(date), meanndvi, color = trt))+
+
+ggplot(mean.table[5:24,], aes(x = as.factor(date), meanndvi, color = trt, size = 4))+
   geom_point()
 #these last few lines of code aren't necessary
 
