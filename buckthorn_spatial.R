@@ -46,10 +46,6 @@ tm_shape(m0503bRGB, bbox = extentB, unit = "m")+
     is.portrait = TRUE)
   
 
-
-
-
-
 m0503b <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_03_21_buckthorn/05_03_21_buckthorn_transparent_reflectance_blue.tif",
                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_03_21_buckthorn/05_03_21_buckthorn_transparent_reflectance_green.tif",
                 "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/05_03_21_buckthorn/05_03_21_buckthorn_transparent_reflectance_red.tif",
@@ -158,6 +154,7 @@ m0618b1 <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/0
             "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p1/06_18_21_buckthorn_p1_rerun_transparent_reflectance_red.tif",
             "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p1/06_18_21_buckthorn_p1_rerun_transparent_reflectance_red edge.tif",
             "K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p1/06_18_21_buckthorn_p1_rerun_transparent_reflectance_nir.tif")
+
 m0618b1RGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p1/rgb/06_18_21_buckthorn_p1_unmerged_rgb_transparent_reflectance_group1.tif")
 
 tm_shape(m0618b1RGB, bbox = extentB, unit = "m")+
@@ -222,6 +219,7 @@ plotRGB(m0618b2, r = 3, g = 2, b = 1, scale = 0.5, stretch = "lin")
 ndvi0618b2 <- (m0618b2[[5]] - m0618b2[[3]]) / (m0618b2[[5]] + m0618b2[[3]])
 #plot(ndvi0618b2)
 
+#not great quality so use part 1
 m0618b2RGB <- stack("K:/Environmental_Studies/hkropp/GIS/drone/campus/mapping/P4M/06_18_21_buckthorn_p2/rgb/06_18_21_buckthorn_p2_rgb_unmerged_transparent_reflectance_group1.tif")
 plotRGB(m0618b2RGB, r = 1, g = 2, b = 3, scale = 0.5, stretch = "lin")
 
@@ -230,7 +228,7 @@ m0618b2RGBc <- crop(m0618b2RGB, extentB)
 plotRGB(m0618b2RGBc, r = 1, g = 2, b = 3, scale = 0.3, stretch = "lin")
 
 
-
+#not great quality so use part 1
 tm_shape(m0618b2RGB, bbox = extentB, unit = "m")+
   tm_rgb(r = 1, g = 2, b = 3, max.value = 120000)+
   tm_layout(title = "06/18/21", title.color = "white")+
@@ -606,6 +604,21 @@ plot(ndvi0707bR - ndvi0503b)
 
 ndvi0618b1R <- resample(ndvi0618b1, ndvi0503b)
 plot(ndvi0618b1R - ndvi0503b)
+
+#poster resampling
+ndvi0625v0618 <- resample(ndvi0625b2, ndvi0618b1)
+plot(ndvi0625v0618 - ndvi0618b1, ext = extentB, main = "Difference in NDVI
+     06/18/21 and 06/25/21")
+
+ndvi0701v0618 <- resample(ndvi0701b1, ndvi0618b1)
+plot(ndvi0701v0618 - ndvi0618b1, ext = extentB, main = "Difference in NDVI
+     06/18/21 and 07/01/21")
+
+ndvi0719v0618 <- resample(ndvi0719b, ndvi0618b1)
+plot(ndvi0719v0618 - ndvi0618b1, ext = extentB, main = "Difference in NDVI
+     06/18/21 and 07/19/21")
+
+
 
 #resampling where 0712 is the base map for 0707
 ndvi0707bR2 <- resample(ndvi0707b, ndvi0712b1)
